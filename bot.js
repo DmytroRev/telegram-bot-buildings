@@ -1,13 +1,11 @@
-import { config } from "dotenv";
 import { Telegraf, Markup } from "telegraf";
 import { fetchAds } from "./parser.js";
 import { readFileSync, writeFileSync } from "fs";
 
-config();
-
-console.log("Завантаження .env:", {
-  BOT_TOKEN: process.env.BOT_TOKEN ? "ОК" : "Відсутній",
-});
+console.log(
+  "BOT_TOKEN у середовищі:",
+  process.env.BOT_TOKEN ? "ОК" : "Відсутній"
+);
 
 const bot = new Telegraf(process.env.BOT_TOKEN, { handlerTimeout: 180000 });
 
