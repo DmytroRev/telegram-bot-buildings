@@ -1,18 +1,18 @@
 import { Telegraf, Markup } from "telegraf";
 import { fetchAds } from "./parser.js";
 import { readFileSync, writeFileSync } from "fs";
-import puppeteer from "puppeteer";
+import puppeteer from 'puppeteer';
 
 console.log(
   "BOT_TOKEN у середовищі:",
   process.env.BOT_TOKEN ? "ОК" : "Відсутній"
 );
 
+
 const browser = await puppeteer.launch({
   headless: true,
-  args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  executablePath: process.env.CHROME_PATH || puppeteer.executablePath(),
-});
+  args: ['--no-sandbox', '--disable-setuid-sandbox']
+})
 
 const bot = new Telegraf(process.env.BOT_TOKEN, { handlerTimeout: 180000 });
 
