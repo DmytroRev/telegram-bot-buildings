@@ -1,31 +1,12 @@
 import { Telegraf, Markup } from "telegraf";
 import { fetchAds } from "./parser.js";
 import { readFileSync, writeFileSync } from "fs";
-import puppeteer from "puppeteer";
 import "dotenv/config";
 
 console.log(
   "BOT_TOKEN у середовищі:",
   process.env.BOT_TOKEN ? "ОК" : "Відсутній"
 );
-
-const browser = await puppeteer.launch({
-  headless: true,
-  args: [
-    "--no-sandbox",
-    "--disable-setuid-sandbox",
-    "--disable-blink-features=AutomationControlled",
-    "--disable-dev-shm-usage",
-    "--disable-gpu",
-  ],
-});
-
-const page = await browser.newPage();
-
-await page.setUserAgent(
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
-);
-await page.setViewport({ width: 1280, height: 800 });
 
 const bot = new Telegraf(process.env.BOT_TOKEN, { handlerTimeout: 180000 });
 
@@ -68,10 +49,10 @@ async function checkAds(ctx) {
 
     for (const ad of newAds) {
       const message = `
-      🏗 *${ad.offerTitle || ad.title}*
-      👤 Автор: *${ad.name || "невідомо"}*
-      📍 Місто: ${ad.location || "не вказано"}
-      📅 Дата розміщення: ${ad.date || "невідомо"}
+🏗 *${ad.offerTitle || ad.title}*
+👤 Автор: *${ad.name || "невідомо"}*
+📍 Місто: ${ad.location || "не вказано"}
+📅 Дата розміщення: ${ad.date || "невідомо"}
       `;
 
       await ctx.reply(message, {
@@ -92,7 +73,7 @@ async function checkAds(ctx) {
   } catch (error) {
     console.error("❌ Помилка під час перевірки оголошень:", error.message);
     if (ctx) {
-      ctx.reply("❌ Виникла помилка при перевірці оголошень.");
+      await ctx.reply("❌ Виникла помилка при перевірці оголошень.");
     }
   }
 }
@@ -102,7 +83,6 @@ const mainMenu = Markup.keyboard([
   ["🛑 Зупинити пошук", "🔄 Відновити пошук"],
 ]).resize();
 
-// Старт
 bot.start((ctx) => {
   ctx.reply(
     `👋 Вітаю! Я бот для відстеження нових оголошень з OLX (послуги ремонту, Київ).
@@ -140,6 +120,7 @@ bot.hears("🔄 Відновити пошук", async (ctx) => {
 bot.telegram.setMyDescription(
   "Цей бот показує нові оголошення з OLX про ремонтні послуги у Києві."
 );
+
 bot.telegram.setChatMenuButton({ type: "commands" });
 
 bot
