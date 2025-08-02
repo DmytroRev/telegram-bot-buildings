@@ -2,6 +2,7 @@ import { Telegraf, Markup } from "telegraf";
 import { fetchAds } from "./parser.js";
 import { readFileSync, writeFileSync } from "fs";
 import puppeteer from 'puppeteer';
+import 'dotenv/config';
 
 console.log(
   "BOT_TOKEN у середовищі:",
