@@ -1,19 +1,31 @@
 import { Telegraf, Markup } from "telegraf";
 import { fetchAds } from "./parser.js";
 import { readFileSync, writeFileSync } from "fs";
-import puppeteer from 'puppeteer';
-import 'dotenv/config';
+import puppeteer from "puppeteer";
+import "dotenv/config";
 
 console.log(
   "BOT_TOKEN у середовищі:",
   process.env.BOT_TOKEN ? "ОК" : "Відсутній"
 );
 
-
 const browser = await puppeteer.launch({
   headless: true,
-  args: ['--no-sandbox', '--disable-setuid-sandbox']
-})
+  args: [
+    "--no-sandbox",
+    "--disable-setuid-sandbox",
+    "--disable-blink-features=AutomationControlled",
+    "--disable-dev-shm-usage",
+    "--disable-gpu",
+  ],
+});
+
+const page = await browser.newPage();
+
+await page.setUserAgent(
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
+);
+await page.setViewport({ width: 1280, height: 800 });
 
 const bot = new Telegraf(process.env.BOT_TOKEN, { handlerTimeout: 180000 });
 

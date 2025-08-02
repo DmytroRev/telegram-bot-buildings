@@ -82,7 +82,11 @@ async function fetchAdDetails(link) {
     });
     await page.setViewport({ width: 1920, height: 1080 });
 
-    await page.goto(link, { waitUntil: "networkidle2", timeout: 60000 });
+    await page.goto(link, { waitUntil: "domcontentloaded", timeout: 120000 });
+
+    await page.evaluateOnNewDocument(() => {
+      Object.defineProperty(navigator, "webdriver", { get: () => false });
+    });
 
     await page.waitForSelector("body", { timeout: 10000 }).catch(() => {});
 
@@ -95,7 +99,7 @@ async function fetchAdDetails(link) {
     );
 
     const offerTitle =
-      $("h4[data-testid='offer_title'].css-10ofhqw").first().text().trim() ||
+      $("div[data-testid='offer_title']").find("h4").first().text().trim() ||
       "Без заголовка";
 
     const name = $("div[data-testid='user-profile-user-name'] h4")
@@ -156,7 +160,11 @@ export async function fetchAds(seen) {
       });
       await page.setViewport({ width: 1920, height: 1080 });
 
-      await page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });
+      await page.goto(url, { waitUntil: "domcontentloaded", timeout: 120000 });
+
+      await page.evaluateOnNewDocument(() => {
+        Object.defineProperty(navigator, "webdriver", { get: () => false });
+      });
 
       await page.waitForSelector("body", { timeout: 10000 }).catch(() => {});
 
