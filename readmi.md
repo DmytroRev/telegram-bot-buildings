@@ -1,0 +1,1 @@
+node --no-deprecation bot.js
