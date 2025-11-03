@@ -61,9 +61,17 @@ async function fetchAdDetails(page, link) {
   try {
     console.log(`Завантаження оголошення: ${link}`);
 
-    await page.goto(link, { waitUntil: "domcontentloaded", timeout: 60000 });
+   for (let attempt = 1; attempt <= 3; attempt++) {
+  try {
+    await page.goto(link, { waitUntil: "domcontentloaded", timeout: 90000 });
+    break;
+  } catch (e) {
+    console.warn(`Спроба ${attempt} не вдалася для ${link}, повтор...`);
+    if (attempt === 3) throw e;
+  }
+}
 
-    await page.waitForSelector("body", { timeout: 10000 }).catch(() => {});
+    await page.waitForSelector("body", { timeout: 10000 }).catch(() => { });
 
     const data = await page.content();
     const $ = cheerio.load(data);
@@ -106,6 +114,7 @@ export async function fetchAds(seen) {
 
   const browser = await puppeteer.launch({
     headless: true,
+    executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
     args: [
       "--no-sandbox",
       "--disable-setuid-sandbox",
@@ -144,7 +153,7 @@ export async function fetchAds(seen) {
           timeout: 120000,
         });
 
-        await page.waitForSelector("body", { timeout: 10000 }).catch(() => {});
+        await page.waitForSelector("body", { timeout: 10000 }).catch(() => { });
 
         const data = await page.content();
         const $ = cheerio.load(data);
