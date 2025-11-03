@@ -66,7 +66,7 @@ async function fetchAdDetails(page, link) {
     await page.goto(link, { waitUntil: "domcontentloaded", timeout: 90000 });
     break;
   } catch (e) {
-    console.warn(`Спроба ${attempt} не вдалася для ${link}, повтор...`);
+    console.warn(`Спроба ${attempt} не вдалася для ${аlink}, повтор...`);
     if (attempt === 3) throw e;
   }
 }
@@ -113,7 +113,7 @@ export async function fetchAds(seen) {
   let ads = [];
 
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: 'new',
     executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
     args: [
       "--no-sandbox",

@@ -8,7 +8,7 @@ console.log(
   process.env.BOT_TOKEN ? "ОК" : "Відсутній"
 );
 
-const bot = new Telegraf(process.env.BOT_TOKEN, { handlerTimeout: 180000 });
+const bot = new Telegraf(process.env.BOT_TOKEN, { handlerTimeout: 600000 });
 
 let seen = [];
 let searchEnabled = true;
