@@ -66,7 +66,7 @@ async function fetchAdDetails(page, link) {
     await page.goto(link, { waitUntil: "domcontentloaded", timeout: 90000 });
     break;
   } catch (e) {
-    console.warn(`Спроба ${attempt} не вдалася для ${аlink}, повтор...`);
+    console.warn(`Спроба ${attempt} не вдалася для ${link}, повтор...`);
     if (attempt === 3) throw e;
   }
 }
